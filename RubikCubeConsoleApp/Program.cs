@@ -1,9 +1,5 @@
 ﻿using CubeLibrary;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RubikCubeConsoleApp
 {
@@ -11,17 +7,6 @@ namespace RubikCubeConsoleApp
     {
         static void Main(string[] args)
         {
-            //var Red = new CubeFace('R');
-            //char[,] face = new char[3, 3];
-            //PrintCubeFace(Red);
-            //Console.WriteLine("Rotate left");
-            //Red.RotateFace('l');
-            //PrintCubeFace(Red);
-            //Console.WriteLine("Rotate Right");
-            //Red.RotateFace('r');
-            //PrintCubeFace(Red);
-            //Console.ReadLine();
-            //face = RotateCubeFace(Red,'l');
             var SuperCube = new RubikCube();
             PrintCube(SuperCube);
             Console.ReadLine();
@@ -117,7 +102,7 @@ namespace RubikCubeConsoleApp
         {
             var Cube = FullCube.Get();
             PrintFloattingFace(Cube[0]);
-            PrintAdyacentFaces(Cube[1], Cube[2], Cube [3]);
+            PrintAdyacentFaces(Cube[1], Cube[2], Cube[3]);
             PrintFloattingFace(Cube[4]);
             PrintFloattingFace(Cube[5]);
         }

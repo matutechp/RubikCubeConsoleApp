@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CubeLibrary
 {
@@ -52,15 +48,15 @@ namespace CubeLibrary
         /// <returns>result</returns>
         public char[,] GetFace()
         {
-            var result = new char[3,3];
+            var result = new char[3, 3];
             for (int i = 0; i < 3; i++)
             {
                 result[0, i] = UpEdge[i];
                 result[2, i] = DownEdge[i];
             }
-            result[1,0] = LeftEdge[1];
-            result[1,1] = FaceColor;
-            result[1,2] = RightEdge[1];
+            result[1, 0] = LeftEdge[1];
+            result[1, 1] = FaceColor;
+            result[1, 2] = RightEdge[1];
             return result;
 
         }
@@ -92,22 +88,22 @@ namespace CubeLibrary
         /// <param name="Edge">u = Up, d = Down, l = Left, r = Right</param>
         public void CopyToEdge(char[] SourceArray, char Edge)
         {
-            switch(Edge)
+            switch (Edge)
             {
                 case 'u':
                     {
                         Array.Copy(SourceArray, UpEdge, SourceArray.Length);
                         LeftEdge[0] = UpEdge[0];
                         RightEdge[0] = UpEdge[2];
-                        break;   
+                        break;
                     }
                 case 'd':
                     {
                         Array.Copy(SourceArray, DownEdge, SourceArray.Length);
                         LeftEdge[2] = DownEdge[0];
                         RightEdge[2] = DownEdge[2];
-                        
-                        break;   
+
+                        break;
                     }
                 case 'l':
                     {
@@ -115,7 +111,7 @@ namespace CubeLibrary
                         UpEdge[0] = LeftEdge[0];
                         DownEdge[0] = LeftEdge[2];
 
-                        break;   
+                        break;
                     }
                 case 'r':
                     {
@@ -123,7 +119,7 @@ namespace CubeLibrary
                         UpEdge[2] = RightEdge[0];
                         DownEdge[2] = RightEdge[2];
 
-                        break;   
+                        break;
                     }
                 default:
                     Console.WriteLine("Invalid Command");
@@ -168,16 +164,16 @@ namespace CubeLibrary
                 //Some arrays need to be reversed to match the rotation motion from the face
                 case 'l':
                     {
-                       Array.Copy(RightEdge,UpEdge, RightEdge.Length);
-                       Array.Reverse(DownEdge);
-                       Array.Copy(DownEdge,RightEdge, DownEdge.Length);
-                       Array.Copy(LeftEdge,DownEdge, LeftEdge.Length);
-                       Array.Reverse(TempArray);
-                       Array.Copy(TempArray,LeftEdge, TempArray.Length);
-                       break;
+                        Array.Copy(RightEdge, UpEdge, RightEdge.Length);
+                        Array.Reverse(DownEdge);
+                        Array.Copy(DownEdge, RightEdge, DownEdge.Length);
+                        Array.Copy(LeftEdge, DownEdge, LeftEdge.Length);
+                        Array.Reverse(TempArray);
+                        Array.Copy(TempArray, LeftEdge, TempArray.Length);
+                        break;
                     }
             }
-                
+
 
         }
     }

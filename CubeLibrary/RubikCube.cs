@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CubeLibrary
 {
     public class RubikCube
     {
-       
+
         public CubeFace Front { get; }
         public CubeFace Back { get; }
         public CubeFace Top { get; }
@@ -78,7 +75,7 @@ namespace CubeLibrary
                             Top.CopyToEdgeReverse(Left.GetEdge('r'), 'd');
                             Left.CopyToEdgeReverse(Bottom.GetEdge('d'), 'r');
                             Bottom.CopyToEdge(Right.GetEdge('l'), 'd');
-                            Right.CopyToEdge(TempArray,'l');
+                            Right.CopyToEdge(TempArray, 'l');
                             break;
                         }
                     //Back Face Rotation
@@ -123,7 +120,7 @@ namespace CubeLibrary
                             Top.CopyToEdge(Front.GetEdge('r'), 'r');
                             Front.CopyToEdgeReverse(Bottom.GetEdge('l'), 'r');
                             Bottom.CopyToEdge(Back.GetEdge('l'), 'l');
-                            Back.CopyToEdgeReverse(TempArray,'r');
+                            Back.CopyToEdgeReverse(TempArray, 'l');
                             break;
                         }
                     //Left Face Rotation
@@ -166,10 +163,10 @@ namespace CubeLibrary
                     //Back Face Rotation
                     case 'b':
                         {
-                            Back.RotateFace ('l');
+                            Back.RotateFace('l');
                             Array.Copy(Top.GetEdge('u'), TempArray, Top.GetEdge('u').Length);
                             Top.CopyToEdgeReverse(Left.GetEdge('l'), 'u');
-                            Left.CopyToEdgeReverse(Bottom.GetEdge('u'), 'r');
+                            Left.CopyToEdgeReverse(Bottom.GetEdge('u'), 'l');
                             Bottom.CopyToEdge(Right.GetEdge('r'), 'u');
                             Right.CopyToEdge(TempArray, 'r');
 
@@ -189,7 +186,7 @@ namespace CubeLibrary
                     //Bottom Face Rotation
                     case 'd':
                         {
-                            Bottom.RotateFace ('l');
+                            Bottom.RotateFace('l');
                             Array.Copy(Back.GetEdge('d'), TempArray, Back.GetEdge('d').Length);
                             Back.CopyToEdge(Left.GetEdge('d'), 'd');
                             Left.CopyToEdge(Front.GetEdge('d'), 'd');
@@ -232,7 +229,7 @@ namespace CubeLibrary
             //Wrong input
             else
                 Console.Write("Invalid movement");
-        
+
         }
         /// <summary>
         /// Rotate the cube to set a new face as a front face
@@ -247,7 +244,7 @@ namespace CubeLibrary
 
             switch (direction)
             {
-                 //Cube Rotation up
+                //Cube Rotation up
                 case 'u':
                     {
                         break;
@@ -260,7 +257,7 @@ namespace CubeLibrary
                 //Cube Rotation Left
                 case 'l':
                     {
-                        break;;
+                        break; ;
 
                     }
                 //Cube Rotation Right
