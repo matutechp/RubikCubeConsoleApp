@@ -1,14 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CubeLibrary
 {
     public class CubeFace
     {
-        char FaceColor;
+        private Dictionary<char, Action<char[]>> RotateEdge = new Dictionary<char, Action<char[]>>();
+
+        private char faceColor;
+
+        private char GetFaceColor()
+        {
+            return faceColor;
+        }
+
+        private void SetFaceColor(char value)
+        {
+            faceColor = value;
+        }
+
         char[] UpEdge = new char[3];
         char[] DownEdge = new char[3];
         char[] RightEdge = new char[3];
         char[] LeftEdge = new char[3];
+
+        public char FaceColor { get { return GetFaceColor(); } set { SetFaceColor(value); } }
 
         /// <summary>
         /// Generate a Face of the cube full with only one color 
@@ -25,6 +42,9 @@ namespace CubeLibrary
                 RightEdge[i] = FaceColor;
                 LeftEdge[i] = FaceColor;
             }
+
+            BuildRotateEdgeDictionary();
+
             //Assinging values to check the movement of the faces
 
             //FaceColor = '5';
@@ -42,6 +62,14 @@ namespace CubeLibrary
             //downedge[2] = '9';
 
         }
+
+
+        private void BuildRotateEdgeDictionary()
+        {
+            RotateEdge.Add('r', RotateFaceToTheRight);
+            RotateEdge.Add('l', RotateFaceToLeft);
+        }
+
         /// <summary>
         /// Array[3,3] that represent the face
         /// </summary>
@@ -55,11 +83,12 @@ namespace CubeLibrary
                 result[2, i] = DownEdge[i];
             }
             result[1, 0] = LeftEdge[1];
-            result[1, 1] = FaceColor;
+            result[1, 1] = GetFaceColor();
             result[1, 2] = RightEdge[1];
             return result;
 
         }
+
         /// <summary>
         /// Return a char[3] with the content of the Edge that is specify
         /// </summary>
@@ -138,43 +167,93 @@ namespace CubeLibrary
             CopyToEdge(SourceArray, Edge);
         }
 
+
+
+
         /// <summary>
         /// Rotare the face in a direction
         /// </summary>
         /// <param name="Direction">l = Left, r = Right</param>
         public void RotateFace(char Direction)
         {
-            char[] TempArray = new char[3];
-            Array.Copy(UpEdge, TempArray, UpEdge.Length);
-            switch (Direction)
-            {
-                //Direction = 'r' to rotate to the right
-                //some arrays need to be reversed to match the rotation motion from the face
-                case 'r':
-                    {
-                        Array.Reverse(LeftEdge);
-                        Array.Copy(LeftEdge, UpEdge, LeftEdge.Length);
-                        Array.Copy(DownEdge, LeftEdge, DownEdge.Length);
-                        Array.Reverse(RightEdge);
-                        Array.Copy(RightEdge, DownEdge, RightEdge.Length);
-                        Array.Copy(TempArray, RightEdge, TempArray.Length);
-                        break;
-                    }
-                //Direction = 'l' to rotate to the left
-                //Some arrays need to be reversed to match the rotation motion from the face
-                case 'l':
-                    {
-                        Array.Copy(RightEdge, UpEdge, RightEdge.Length);
-                        Array.Reverse(DownEdge);
-                        Array.Copy(DownEdge, RightEdge, DownEdge.Length);
-                        Array.Copy(LeftEdge, DownEdge, LeftEdge.Length);
-                        Array.Reverse(TempArray);
-                        Array.Copy(TempArray, LeftEdge, TempArray.Length);
-                        break;
-                    }
-            }
+            var tempArray = UpEdge;
+            RotateEdge[Direction](tempArray);
+        }
+
+        public CubeFace GetRotatedFace(char Direction)
+        {
+            var tempFace = this;
+            var tempArray = tempFace.UpEdge;
+            tempFace.RotateEdge[Direction](tempArray);
+            return tempFace;
+        }
+
+        private void RotateFaceToLeft(char[] tempArray)
+        {
+            UpEdge = RightEdge;
+            RightEdge = DownEdge.Reverse().ToArray();
+            DownEdge = LeftEdge;
+            LeftEdge = tempArray.Reverse().ToArray();
+        }
+
+        private void RotateFaceToTheRight(char[] tempArray)
+        {
+            UpEdge = LeftEdge.Reverse().ToArray();
+            LeftEdge = DownEdge;
+            DownEdge = RightEdge.Reverse().ToArray();
+            RightEdge = tempArray;
+        }
+
+        public CubeFace Reverse()
+        {
+            this.RotateFace('r');
+            this.RotateFace('l');
+            return this;
+        }
+
+       public CubeFace GetReverse()
+        {
+
+            var result = new CubeFace('t');
+            var temporal1 = new char[3];
+            var temporal2 = new char[3];
+            Array.Copy(this.GetEdge('u'), temporal1, this.GetEdge('u').Length);
+            Array.Copy(this.GetEdge('d'), temporal2, this.GetEdge('d').Length);
+            Array.Reverse(temporal1);
+            Array.Reverse(temporal2);
+            Array.Copy(temporal1, result.GetEdge('d'), result.GetEdge('d').Length);
+            Array.Copy(temporal2, result.GetEdge('u'), result.GetEdge('u').Length);
+            Array.Copy(this.GetEdge('r'), temporal1, this.GetEdge('r').Length);
+            Array.Copy(this.GetEdge('l'), temporal2, this.GetEdge('l').Length);
+            Array.Reverse(temporal1);
+            Array.Reverse(temporal2);
+            Array.Copy(temporal1, result.GetEdge('l'), result.GetEdge('l').Length);
+            Array.Copy(temporal2, result.GetEdge('r'), result.GetEdge('r').Length);
+            result.FaceColor = this.FaceColor;
+            return result;
 
 
         }
+
+
+        ///// <summary>
+        ///// Copy the Source Face into the Destination Face
+        ///// </summary>
+        ///// <param name="SourceCubeFace"></param>
+        ///// <param name="DestinationCubeFace"></param>
+        //public static CubeFace operator= (CubeFace SourceCubeFace)
+        //{
+        //    var DestinationCubeFace = new CubeFace('t');
+        //    DestinationCubeFace.FaceColor = SourceCubeFace.FaceColor;
+        //    for (int i = 0; i < SourceCubeFace.UpEdge.Length; i++)
+        //    {
+        //        DestinationCubeFace.UpEdge[i] = SourceCubeFace.UpEdge[i];
+        //        DestinationCubeFace.RightEdge[i] = SourceCubeFace.RightEdge[i];
+        //        DestinationCubeFace.LeftEdge[i] = SourceCubeFace.LeftEdge[i];
+        //        DestinationCubeFace.DownEdge[i] = SourceCubeFace.DownEdge[i];
+        //        return DestinationCubeFace;
+
+        //    }
+        //}
     }
 }

@@ -32,7 +32,7 @@ namespace RubikCubeConsoleApp
                 Direction = Char.ToLower(Console.ReadKey().KeyChar);
                 Console.WriteLine();
                 Console.WriteLine("Rotating Face {0} to the {1}", Face, Direction);
-                TestCube.RotateFace(Face, Direction);
+                TestCube.RotateFace((Faces)Face, (Direction)Direction);
                 PrintCube(TestCube);
             }
 
