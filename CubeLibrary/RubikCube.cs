@@ -14,7 +14,6 @@ namespace CubeLibrary
         public CubeFace Left { get; private set; }
         public CubeFace Right { get; private set; }
         public Dictionary<Direction, Action> MovementDictionary { get; private set; }
-        public Dictionary<string, Direction> NotationDictionary { get; private set; }
 
         public RubikCube(char F, char B, char U, char D, char L, char R)
         {
@@ -35,44 +34,9 @@ namespace CubeLibrary
             Right = new CubeFace('G');
 
             BuildDictionaryDirection();
-            BuildDictionaryNotation();
 
         }
 
-        private void BuildDictionaryNotation()
-        {
-            NotationDictionary = new Dictionary<string, Direction>();
-            NotationDictionary.Add("F", Direction.FrontFace);
-            NotationDictionary.Add("F'", Direction.FrontFaceInverse);
-            NotationDictionary.Add("R", Direction.RightFace);
-            NotationDictionary.Add("R'", Direction.RightFaceInverse);
-            NotationDictionary.Add("L", Direction.LeftFace);
-            NotationDictionary.Add("L'", Direction.LeftFaceInverse);
-            NotationDictionary.Add("U", Direction.TopFace);
-            NotationDictionary.Add("U'", Direction.TopFaceInverse);
-            NotationDictionary.Add("D", Direction.BottomFace);
-            NotationDictionary.Add("D'", Direction.BottomFaceInverse);
-            NotationDictionary.Add("u", Direction.DoubleUp);
-            NotationDictionary.Add("u'", Direction.DoubleUpInverse);
-            NotationDictionary.Add("r", Direction.DoubleRight);
-            NotationDictionary.Add("r'", Direction.DoubleRightInverse);
-            NotationDictionary.Add("f", Direction.DoubleFront);
-            NotationDictionary.Add("f'", Direction.DoubleFrontInverse);
-            NotationDictionary.Add("d", Direction.DoubleDown);
-            NotationDictionary.Add("d'", Direction.DoubleDownInverse);
-            NotationDictionary.Add("l", Direction.DoubleLeft);
-            NotationDictionary.Add("l'", Direction.DoubleLeftInverse);
-            NotationDictionary.Add("b", Direction.DoubleBack);
-            NotationDictionary.Add("b'", Direction.DoubleBackInverse);
-            NotationDictionary.Add("M", Direction.FrontMiddleDown);
-            NotationDictionary.Add("M'", Direction.FrontMiddleUp);
-            NotationDictionary.Add("E", Direction.FrontMiddleRight);
-            NotationDictionary.Add("E'", Direction.FrontMiddleLeft);
-            NotationDictionary.Add("S", Direction.TopMiddleRight);
-            NotationDictionary.Add("S'", Direction.TopMiddleLeft);
-
-
-        }
 
         private void BuildDictionaryDirection()
         {
@@ -330,7 +294,6 @@ namespace CubeLibrary
             Right.CopyToEdge(Bottom.GetEdge('u'), 'r');
             Bottom.CopyToEdgeReverse(Left.GetEdge('l'), 'u');
             Left.CopyToEdgeReverse(TempArray, 'l');
-            throw new NotImplementedException();
         }
 
         private void MoveCubeRight()

@@ -1,23 +1,89 @@
 ﻿using CubeLibrary;
 using System;
+using System.Collections.Generic;
 
 namespace RubikCubeConsoleApp
 {
     internal class Program
     {
+
+        public  static Dictionary<string, Direction> NotationDictionary { get; private set; }
+
         static void Main(string[] args)
         {
+            BuildDictionaryNotation();
+
             var SuperCube = new RubikCube();
             PrintCube(SuperCube);
             Console.ReadLine();
             Console.Clear();
-            TestFaceRotation(SuperCube);
-            Console.ReadLine();
+            //TestFaceRotation(SuperCube);
+            FaceRotationWithNotation(SuperCube);
+            //Console.ReadLine();
 
 
 
         }
 
+        private static  void BuildDictionaryNotation()
+        {
+            NotationDictionary = new Dictionary<string, Direction>();
+
+            //Face rotations
+            NotationDictionary.Add("F", Direction.FrontFace);
+            NotationDictionary.Add("F'", Direction.FrontFaceInverse);
+            NotationDictionary.Add("R", Direction.RightFace);
+            NotationDictionary.Add("R'", Direction.RightFaceInverse);
+            NotationDictionary.Add("L", Direction.LeftFace);
+            NotationDictionary.Add("L'", Direction.LeftFaceInverse);
+            NotationDictionary.Add("U", Direction.TopFace);
+            NotationDictionary.Add("U'", Direction.TopFaceInverse);
+            NotationDictionary.Add("D", Direction.BottomFace);
+            NotationDictionary.Add("D'", Direction.BottomFaceInverse);
+            NotationDictionary.Add("B", Direction.BackFace);
+            NotationDictionary.Add("B'", Direction.BackFaceInverse);
+
+            //Two layers at the same time
+            NotationDictionary.Add("u", Direction.DoubleUp);
+            NotationDictionary.Add("u'", Direction.DoubleUpInverse);
+            NotationDictionary.Add("r", Direction.DoubleRight);
+            NotationDictionary.Add("r'", Direction.DoubleRightInverse);
+            NotationDictionary.Add("f", Direction.DoubleFront);
+            NotationDictionary.Add("f'", Direction.DoubleFrontInverse);
+            NotationDictionary.Add("d", Direction.DoubleDown);
+            NotationDictionary.Add("d'", Direction.DoubleDownInverse);
+            NotationDictionary.Add("l", Direction.DoubleLeft);
+            NotationDictionary.Add("l'", Direction.DoubleLeftInverse);
+            NotationDictionary.Add("b", Direction.DoubleBack);
+            NotationDictionary.Add("b'", Direction.DoubleBackInverse);
+
+            //Slices Turns
+            NotationDictionary.Add("M", Direction.FrontMiddleDown);
+            NotationDictionary.Add("M'", Direction.FrontMiddleUp);
+            NotationDictionary.Add("E", Direction.FrontMiddleRight);
+            NotationDictionary.Add("E'", Direction.FrontMiddleLeft);
+            NotationDictionary.Add("S", Direction.TopMiddleRight);
+            NotationDictionary.Add("S'", Direction.TopMiddleLeft);
+
+            //Whole Cube Reorientation
+
+
+        }
+
+        private static void FaceRotationWithNotation(RubikCube cube)
+        {
+            string movement;
+            while (Console.ReadLine() != "end")
+            {
+                Console.WriteLine("Insert movement");
+                movement = Console.ReadLine();
+                Console.WriteLine("Making move notation {0}", movement);
+                cube.MovementDictionary[NotationDictionary[movement]].Invoke();
+                PrintCube(cube);
+
+
+            }
+        }
         private static void TestFaceRotation(RubikCube Cube)
         {
             var TestCube = Cube;
